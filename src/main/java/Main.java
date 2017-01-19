@@ -11,6 +11,11 @@ import java.sql.*;
 
 import com.heroku.sdk.jdbc.DatabaseUrl;
 
+import static javax.measure.unit.SI.KILOGRAM;
+import javax.measure.quantity.Mass;
+import org.jscience.physics.model.RelativisticModel;
+import org.jscience.physics.amount.Amount;
+
 public class Main {
   public static void main(String... args) throws Exception {
     RatpackServer.start(s -> s
@@ -25,7 +30,9 @@ public class Main {
             .get(ctx -> ctx.render(groovyTemplate("index.html")))
 
             .get("hello", ctx -> {
-              ctx.render("Hello!");
+              RelativisticModel.select();
+              Amount<Mass> m = Amount.valueOf("12 GeV").to(KILOGRAM);
+              ctx.render("E=mc^2: 12 GeV = " + m.toString());
             })
 
             .get("db", ctx -> {
